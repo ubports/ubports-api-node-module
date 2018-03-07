@@ -27,6 +27,10 @@ chai.use(sinonChai);
 
 const Installer = require('../../src/module.js').Installer;
 
+const devicesJson = require("../test-data/devices.json")
+const deviceBaconJson = require("../test-data/device-bacon.json")
+const deviceFP2Json = require("../test-data/device-FP2.json")
+
 describe('Installer module', function() {
   describe("constructor()", function() {
     it("should create default installer-api-client", function() {
@@ -66,6 +70,102 @@ describe('Installer module', function() {
       } catch (err) {
         expect(err.message).to.equal("Host is not a valid URL!");
       }
+    });
+  });
+
+  describe("getDevices()", function() {
+    it("should return devices", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, devicesJson);
+      });
+
+      const api = new Installer();
+      return api.getDevices().then((result) => {
+        expect(result).to.eql(devicesJson);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/installer/devices",
+          json: true
+        });
+      });
+    });
+
+    it("should return error", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(true, {statusCode: 500}, devicesJson);
+      });
+
+      const api = new Installer();
+      return api.getDevices().then(() => {}).catch((err) => {
+        expect(err).to.eql(true);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/installer/devices",
+          json: true
+        });
+      });
+    });
+  });
+
+  describe("getDevice()", function() {
+    it("should return devices", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, deviceBaconJson);
+      });
+
+      const api = new Installer();
+      return api.getDevice("bacon").then((result) => {
+        expect(result).to.eql(deviceBaconJson);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/installer/devices/bacon",
+          json: true
+        });
+      });
+    });
+
+    it("should return error", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(true, {statusCode: 500}, deviceBaconJson);
+      });
+
+      const api = new Installer();
+      return api.getDevice("bacon").then(() => {}).catch((err) => {
+        expect(err).to.eql(true);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/installer/devices/bacon",
+          json: true
+        });
+      });
+    });
+  });
+
+  describe("getInstallInstructs()", function() {
+    it("should return devices", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, deviceBaconJson);
+      });
+
+      const api = new Installer();
+      return api.getInstallInstructs("bacon").then((result) => {
+        expect(result).to.eql(deviceBaconJson);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/installer/bacon",
+          json: true
+        });
+      });
+    });
+
+    it("should return error", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(true, {statusCode: 500}, deviceBaconJson);
+      });
+
+      const api = new Installer();
+      return api.getInstallInstructs("bacon").then(() => {}).catch((err) => {
+        expect(err).to.eql(true);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/installer/bacon",
+          json: true
+        });
+      });
     });
   });
 });
