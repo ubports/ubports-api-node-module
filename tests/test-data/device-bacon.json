@@ -1,0 +1,27 @@
+{
+  "device": {
+    "about": "{\"CPU\":\"2.5 GHz (2457 MHz) quad-core Krait 400\",\"GPU\":\"Adreno 330\",\"Memory\":\"3 GB LPDDR3 RAM\",\"Storage\":\"16 GB (Silk White), 64 GB (Sandstone Black)\"}",
+    "adbRecovery": "",
+    "bitcoin": "12PVgYyic2rjVt5X54F3JY41p4pjeCKQdE",
+    "comment": "",
+    "createdAt": "2015-09-04T23:31:54.000Z",
+    "device": "bacon",
+    "donates": 180,
+    "done": 80,
+    "id": 1,
+    "maintainer": "mariogrip",
+    "mdt": true,
+    "multirom": false,
+    "name": "OnePlus One",
+    "pri": 1,
+    "price": 500,
+    "request": [null],
+    "status": 4,
+    "systemImage": "15.04/stable",
+    "type": "88",
+    "updatedAt": "2017-09-20T02:35:53.000Z",
+    "votes": 0,
+    "whatIsWorking": "{\"Wifi\":2,\"Graphics\":2,\"Boot\":2,\"Rotation\":2,\"Touch\":2,\"Camera\":2,\"Video Decode\":2,\"GPS\":2,\"Bluetooth\":2,\"Resume\":2,\"Sound\":2,\"AppArmor\":2,\"Cellular Radio\":2}",
+    "wiki": ""
+  }
+}

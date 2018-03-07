@@ -27,6 +27,9 @@ chai.use(sinonChai);
 
 const Devices = require('../../src/module.js').Devices;
 
+const devicesJson = require("../test-data/devices.json")
+const deviceBaconJson = require("../test-data/device-bacon.json")
+
 describe('Devices module', function() {
   describe("constructor()", function() {
     it("should create default devices-api-client", function() {
@@ -66,6 +69,70 @@ describe('Devices module', function() {
       } catch (err) {
         expect(err.message).to.equal("Host is not a valid URL!");
       }
+    });
+  });
+
+  describe("getDevices()", function() {
+    it("should return devices", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, devicesJson);
+      });
+
+      const api = new Devices();
+      return api.getDevices().then((result) => {
+        expect(result).to.eql(devicesJson);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/devices",
+          json: true
+        });
+      });
+    });
+
+    it("should return error", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(true, {statusCode: 500}, devicesJson);
+      });
+
+      const api = new Devices();
+      return api.getDevices().then(() => {}).catch((err) => {
+        expect(err).to.eql(true);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/devices",
+          json: true
+        });
+      });
+    });
+  });
+
+  describe("getDevice()", function() {
+    it("should return devices", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, deviceBaconJson);
+      });
+
+      const api = new Devices();
+      return api.getDevice("bacon").then((result) => {
+        expect(result).to.eql(deviceBaconJson);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/device/bacon",
+          json: true
+        });
+      });
+    });
+
+    it("should return error", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(true, {statusCode: 500}, deviceBaconJson);
+      });
+
+      const api = new Devices();
+      return api.getDevice("bacon").then(() => {}).catch((err) => {
+        expect(err).to.eql(true);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/device/bacon",
+          json: true
+        });
+      });
     });
   });
 });
