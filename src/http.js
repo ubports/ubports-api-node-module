@@ -22,8 +22,15 @@ const http = require("request");
 class HttpApi {
   constructor(options) {
     if (options) {
-      if (options.host)
-        this.host = options.host;
+      if (options.host.match(/https?:\/\/(www\.)?[-a-z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-z0-9@:%_\+.~#?&//=]*)/i)) {
+        // ensure https
+        if (!options.allow_insecure && options.host.includes("http://"))
+          throw new Error("Insecure URL! Call with allow_insecure to ignore.");
+        // ensure trailing slash
+        this.host = options.host + (options.host.slice(-1) != "/" ? "/" : "");
+      } else {
+        throw new Error("Host is not a valid URL!");
+      }
       if (options.port)
         this.port = options.port;
     }
