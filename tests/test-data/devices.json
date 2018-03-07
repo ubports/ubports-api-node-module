@@ -1,0 +1,307 @@
+{
+  "devices": {
+    "active": [
+      {
+        "comment": "",
+        "device": "bacon",
+        "donates": 180,
+        "done": 80,
+        "id": 1,
+        "name": "OnePlus One",
+        "pri": 1,
+        "price": 500,
+        "votes": 0
+      },
+      {
+        "comment": null,
+        "device": "FP2",
+        "donates": 390,
+        "done": 80,
+        "id": 4,
+        "name": "Fairphone 2",
+        "pri": 3,
+        "price": 500,
+        "votes": 0
+      },
+      {
+        "comment": "",
+        "device": "hammerhead",
+        "donates": 75,
+        "done": 90,
+        "id": 6,
+        "name": "Nexus 5",
+        "pri": 2,
+        "price": 500,
+        "votes": 0
+      },
+      {
+        "comment": "See http://forum.xda-developers.com/lg-l90/development/port-ubuntu-touch-lg-l90-dual-t3056128 for installation instructions.",
+        "device": "w7",
+        "donates": 50,
+        "done": 75,
+        "id": 7,
+        "name": "Optimus L90",
+        "pri": 6,
+        "price": 300,
+        "votes": null
+      },
+      {
+        "comment": "",
+        "device": "cooler",
+        "donates": null,
+        "done": null,
+        "id": 21,
+        "name": "BQ M10 HD",
+        "pri": 5,
+        "price": null,
+        "votes": null
+      },
+      {
+        "comment": "",
+        "device": "frieza",
+        "donates": null,
+        "done": null,
+        "id": 22,
+        "name": "BQ M10 FHD",
+        "pri": 5,
+        "price": null,
+        "votes": null
+      }
+    ],
+    "progress": [
+      {
+        "comment": null,
+        "device": "manta",
+        "donates": 30,
+        "done": 90,
+        "id": 5,
+        "name": "Nexus 10",
+        "pri": 4,
+        "price": 150,
+        "votes": 0
+      },
+      {
+        "comment": "No working UBports build yet.",
+        "device": "deb",
+        "donates": 0,
+        "done": 90,
+        "id": 16,
+        "name": "Nexus 7 2013 (LTE)",
+        "pri": 8,
+        "price": 0,
+        "votes": null
+      },
+      {
+        "comment": "",
+        "device": "krillin",
+        "donates": 0,
+        "done": 100,
+        "id": 19,
+        "name": "BQ Aquaris E4.5",
+        "pri": 10,
+        "price": 0,
+        "votes": null
+      },
+      {
+        "comment": "",
+        "device": "vegetahd",
+        "donates": null,
+        "done": null,
+        "id": 20,
+        "name": "BQ Aquaris E5",
+        "pri": 11,
+        "price": null,
+        "votes": null
+      },
+      {
+        "comment": "",
+        "device": "arale",
+        "donates": null,
+        "done": null,
+        "id": 23,
+        "name": "Meizu MX4",
+        "pri": 10,
+        "price": null,
+        "votes": null
+      },
+      {
+        "comment": "",
+        "device": "turbo",
+        "donates": null,
+        "done": null,
+        "id": 24,
+        "name": "Meizu PRO 5",
+        "pri": 10,
+        "price": null,
+        "votes": null
+      },
+      {
+        "comment": "Experimental",
+        "device": "mako",
+        "donates": null,
+        "done": null,
+        "id": 25,
+        "name": "Nexus 4",
+        "pri": 10,
+        "price": null,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "mako",
+        "donates": null,
+        "done": null,
+        "id": 26,
+        "name": "Nexus 4",
+        "pri": 1,
+        "price": null,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "flo",
+        "donates": null,
+        "done": null,
+        "id": 27,
+        "name": "Nexus 7 (wifi)",
+        "pri": 1,
+        "price": null,
+        "votes": null
+      }
+    ],
+    "vote": [
+      {
+        "comment": null,
+        "device": "op2",
+        "donates": 45,
+        "done": 0,
+        "id": 2,
+        "name": "OnePlus Two",
+        "pri": 2,
+        "price": 500,
+        "votes": 0
+      },
+      {
+        "comment": null,
+        "device": "shamu",
+        "donates": 310,
+        "done": 10,
+        "id": 3,
+        "name": "Nexus 6",
+        "pri": 8,
+        "price": 300,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "A200",
+        "donates": 30,
+        "done": 0,
+        "id": 8,
+        "name": "Acer iconia a200",
+        "pri": 2,
+        "price": 150,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "bullhead",
+        "donates": 360,
+        "done": 0,
+        "id": 9,
+        "name": "Nexus 5X",
+        "pri": 3,
+        "price": 360,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "angler",
+        "donates": 0,
+        "done": 0,
+        "id": 10,
+        "name": "Nexus 6P",
+        "pri": 4,
+        "price": 510,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "flounder_lte",
+        "donates": 300,
+        "done": 5,
+        "id": 11,
+        "name": "Nexus 9 (WIFI + LTE)",
+        "pri": 3,
+        "price": 300,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "onyx",
+        "donates": 250,
+        "done": 10,
+        "id": 12,
+        "name": "Oneplus X",
+        "pri": 3,
+        "price": 250,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "h815",
+        "donates": 0,
+        "done": null,
+        "id": 13,
+        "name": "LG G4",
+        "pri": 9,
+        "price": 400,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "H850",
+        "donates": 0,
+        "done": null,
+        "id": 14,
+        "name": "LG G5",
+        "pri": 10,
+        "price": 800,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "op3",
+        "donates": 0,
+        "done": 0,
+        "id": 15,
+        "name": "Oneplus 3",
+        "pri": 1,
+        "price": 300,
+        "votes": null
+      },
+      {
+        "comment": "Don't try to flash as there is not an image on the server yet.",
+        "device": "t0lte",
+        "donates": null,
+        "done": 0,
+        "id": 17,
+        "name": "Samsung Galaxy Note 2 LTE",
+        "pri": 6,
+        "price": null,
+        "votes": null
+      },
+      {
+        "comment": null,
+        "device": "i9300",
+        "donates": null,
+        "done": 15,
+        "id": 18,
+        "name": "Samsung Galaxy S3",
+        "pri": null,
+        "price": null,
+        "votes": null
+      }
+    ]
+  }
+}

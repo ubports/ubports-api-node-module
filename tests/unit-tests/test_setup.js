@@ -1,4 +1,3 @@
-"use strict";
 /*
  * Copyright (C) 2017 Marius Gripsgard <marius@ubports.com>
  *
@@ -16,30 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const HttpApi = require("./http.js");
+const sinon = require('sinon');
+const chai = require('chai');
 
-const DEFAULT_HOST = "https://devices.ubports.com/";
+beforeEach(function () {
+  this.sandbox = sinon.sandbox.create();
+});
 
-class Installer extends HttpApi {
-  constructor(options) {
-    if (!options)
-      options = {};
-    if (!options.host)
-      options.host = DEFAULT_HOST;
-    super(options);
-  }
-
-  getDevices() {
-    return this._get("api/installer/devices");
-  }
-
-  getDevice(device) {
-    return this._get("api/installer/devices/"+device);
-  }
-
-  getInstallInstructs(device) {
-    return this._get("api/installer/"+device);
-  }
-}
-
-module.exports = Installer;
+afterEach(function () {
+  this.sandbox.restore();
+});
