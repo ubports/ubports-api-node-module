@@ -29,6 +29,7 @@ const Devices = require('../../src/module.js').Devices;
 
 const devicesJson = require("../test-data/devices.json")
 const deviceBaconJson = require("../test-data/device-bacon.json")
+const deviceFP2Json = require("../test-data/device-FP2.json")
 
 describe('Devices module', function() {
   describe("constructor()", function() {
@@ -127,6 +128,53 @@ describe('Devices module', function() {
 
       const api = new Devices();
       return api.getDevice("bacon").then(() => {}).catch((err) => {
+        expect(err).to.eql(true);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/device/bacon",
+          json: true
+        });
+      });
+    });
+  });
+
+  describe("getNotWorking()", function() {
+    it("should return an empty array", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, deviceBaconJson);
+      });
+
+      const api = new Devices();
+      return api.getNotWorking("bacon").then((result) => {
+        expect(result).to.eql([]);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/device/bacon",
+          json: true
+        });
+      });
+    });
+
+    it("should return what's not working", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, deviceFP2Json);
+      });
+
+      const api = new Devices();
+      return api.getNotWorking("FP2").then((result) => {
+        expect(result).to.eql(['GPS']);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://devices.ubports.com/api/device/FP2",
+          json: true
+        });
+      });
+    });
+
+    it("should return error", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(true, {statusCode: 500}, deviceBaconJson);
+      });
+
+      const api = new Devices();
+      return api.getNotWorking("bacon").then(() => {}).catch((err) => {
         expect(err).to.eql(true);
         expect(requestStub).to.have.been.calledWith({
           url: "https://devices.ubports.com/api/device/bacon",
