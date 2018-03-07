@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 const http = require("request");
 
 // Base http api class
@@ -23,14 +23,15 @@ class HttpApi {
   constructor(options) {
     if (options) {
       if (options.host)
-        this.host = options.host
+        this.host = options.host;
       if (options.port)
-        this.port = options.port
+        this.port = options.port;
     }
-    
+
     if (!this.host)
       throw Error("Host option is required");
   }
+
   _get(endpoint) {
     const _this = this;
     return new Promise(function(resolve, reject) {
@@ -46,6 +47,7 @@ class HttpApi {
       });
     });
   }
+
   _post(endpoint, body) {
     const _this = this;
     return new Promise(function(resolve, reject) {

@@ -15,28 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
- const HttpApi = require("./http.js");
- 
- const DEFAULT_HOST = "https://devices.ubports.com/";
- 
- class Installer extends HttpApi {
-   constructor(options) {
-     if (!options)
+
+const HttpApi = require("./http.js");
+
+const DEFAULT_HOST = "https://devices.ubports.com/";
+
+class Installer extends HttpApi {
+  constructor(options) {
+    if (!options)
       options = {};
-     if (!options.host)
+    if (!options.host)
       options.host = DEFAULT_HOST;
-     super(options)
-   }
-   getDevices() {
-     return this._get("api/installer/devices");
-   }
-   getDevice(device) {
-     return this._get("api/installer/devices/"+device);
-   }
-   getInstallInstructs(device) {
-     return this._get("api/installer/"+device);
-   }
- }
- 
- module.exports = Installer;
+    super(options);
+  }
+
+  getDevices() {
+    return this._get("api/installer/devices");
+  }
+
+  getDevice(device) {
+    return this._get("api/installer/devices/"+device);
+  }
+
+  getInstallInstructs(device) {
+    return this._get("api/installer/"+device);
+  }
+}
+
+module.exports = Installer;
