@@ -145,7 +145,7 @@ describe('Devices module', function() {
 
       const api = new Devices();
       return api.getNotWorking("bacon").then((result) => {
-        expect(result).to.eql([]);
+        expect(result).to.eql(false);
         expect(requestStub).to.have.been.calledWith({
           url: "https://devices.ubports.com/api/device/bacon",
           json: true

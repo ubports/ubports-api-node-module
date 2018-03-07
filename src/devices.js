@@ -46,7 +46,7 @@ class Devices extends HttpApi {
         if (whatsWorking[i] === 1)
           notWorking.push(i);
       }
-      if (whatsWorking.length === 0)
+      if (whatsWorking.length === 0 || notWorking.length === 0)
         return false;
       return notWorking;
     });
