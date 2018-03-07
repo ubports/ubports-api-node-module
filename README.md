@@ -1,4 +1,6 @@
 # Ubports API's node module
+[![Build Status](https://travis-ci.org/ubports/ubports-api-node-module.svg?branch=master)](https://travis-ci.org/ubports/ubports-api-node-module) [![Coverage Status](https://coveralls.io/repos/github/ubports/ubports-api-node-module/badge.svg?branch=master)](https://coveralls.io/github/ubports/ubports-api-node-module?branch=master)
+
 This is a nodejs module to talk to ubports apis and services, built using modern javascript.
 
 *WIP*
