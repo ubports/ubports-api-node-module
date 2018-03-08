@@ -35,33 +35,33 @@ describe('Devices module', function() {
   describe("constructor()", function() {
     it("should create default devices-api-client", function() {
       const api = new Devices();
-      expect(api.host).to.eql("https://devices.ubports.com/");
+      expect(api.host).to.eql("https://api.ubports.com/v1/devices/");
     });
 
     it("should create custom devices-api-client", function() {
-      const api = new Devices({ host: "https://devices.example.com/" });
-      expect(api.host).to.eql("https://devices.example.com/");
+      const api = new Devices({ host: "https://api.example.com/" });
+      expect(api.host).to.eql("https://api.example.com/");
     });
 
     it("should ensure trailing slash", function() {
-      const api = new Devices({ host: "https://devices.example.com" });
-      expect(api.host).to.eql("https://devices.example.com/");
+      const api = new Devices({ host: "https://api.example.com" });
+      expect(api.host).to.eql("https://api.example.com/");
     });
 
     it("should return insecure error", function() {
       try {
-        const api = new Devices({ host: "https://devices.example.com/" });
+        const api = new Devices({ host: "http://api.example.com/" });
       } catch (err) {
         expect(err.message).to.equal("Insecure URL! Call with allow_insecure to ignore.");
       }
     });
 
-    it("should ensure create insecure devices-api-client", function() {
+    it("should create insecure devices-api-client", function() {
       const api = new Devices({
-        host: "https://devices.example.com/",
+        host: "http://api.example.com/",
         allow_insecure: true
       });
-      expect(api.host).to.eql("https://devices.example.com/");
+      expect(api.host).to.eql("http://api.example.com/");
     });
 
     it("should return invalid url error", function() {
@@ -83,7 +83,7 @@ describe('Devices module', function() {
       return api.getDevices().then((result) => {
         expect(result).to.eql(devicesJson);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/devices",
+          url: "https://api.ubports.com/v1/devices/",
           json: true
         });
       });
@@ -98,7 +98,7 @@ describe('Devices module', function() {
       return api.getDevices().then(() => {}).catch((err) => {
         expect(err).to.eql(true);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/devices",
+          url: "https://api.ubports.com/v1/devices/",
           json: true
         });
       });
@@ -115,7 +115,7 @@ describe('Devices module', function() {
       return api.getDevice("bacon").then((result) => {
         expect(result).to.eql(deviceBaconJson);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/device/bacon",
+          url: "https://api.ubports.com/v1/devices/bacon",
           json: true
         });
       });
@@ -130,7 +130,7 @@ describe('Devices module', function() {
       return api.getDevice("bacon").then(() => {}).catch((err) => {
         expect(err).to.eql(true);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/device/bacon",
+          url: "https://api.ubports.com/v1/devices/bacon",
           json: true
         });
       });
@@ -147,7 +147,7 @@ describe('Devices module', function() {
       return api.getNotWorking("bacon").then((result) => {
         expect(result).to.eql(false);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/device/bacon",
+          url: "https://api.ubports.com/v1/devices/bacon",
           json: true
         });
       });
@@ -162,7 +162,7 @@ describe('Devices module', function() {
       return api.getNotWorking("FP2").then((result) => {
         expect(result).to.eql(['GPS']);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/device/FP2",
+          url: "https://api.ubports.com/v1/devices/FP2",
           json: true
         });
       });
@@ -177,7 +177,7 @@ describe('Devices module', function() {
       return api.getNotWorking("bacon").then(() => {}).catch((err) => {
         expect(err).to.eql(true);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/device/bacon",
+          url: "https://api.ubports.com/v1/devices/bacon",
           json: true
         });
       });

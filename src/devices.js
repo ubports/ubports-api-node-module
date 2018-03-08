@@ -18,7 +18,7 @@
 
 const HttpApi = require("./http.js");
 
-const DEFAULT_HOST = "https://devices.ubports.com/";
+const DEFAULT_HOST = "https://api.ubports.com/v1/devices";
 
 class Devices extends HttpApi {
   constructor(options) {
@@ -30,11 +30,11 @@ class Devices extends HttpApi {
   }
 
   getDevices() {
-    return this._get("api/devices");
+    return this._get("");
   }
 
   getDevice(device) {
-    return this._get("api/device/"+device);
+    return this._get(device);
   }
 
   getNotWorking(device) {
