@@ -138,7 +138,7 @@ describe('Devices module', function() {
   });
 
   describe("getNotWorking()", function() {
-    it("should return an empty array", function() {
+    it("should return false", function() {
       const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
         cb(false, {statusCode: 200}, deviceBaconJson);
       });

@@ -18,7 +18,7 @@
 
 const HttpApi = require("./http.js");
 
-const DEFAULT_HOST = "https://api.ubports.com/v1/devices";
+const DEFAULT_HOST = "https://api.ubports.com/v1/devices/";
 
 class Devices extends HttpApi {
   constructor(options) {
@@ -39,18 +39,31 @@ class Devices extends HttpApi {
 
   getNotWorking(device) {
     return this.getDevice(device).then((ret) => {
-      var ww = ret.device.whatIsWorking;
+      var whatsWorking = ret.whatIsWorking;
       var notWorking = [];
-      var whatsWorking = JSON.parse(ww);
       for (var i in whatsWorking) {
-        if (whatsWorking[i] === 1)
-          notWorking.push(i);
+        if (!whatsWorking[i].works)
+          notWorking.push(whatsWorking[i].feature);
       }
-      if (whatsWorking.length === 0 || notWorking.length === 0)
+      if (notWorking.length === 0)
         return false;
       return notWorking;
     });
   }
 }
+
+/*
+ * TODO
+ * - Primitive Functions
+ *  - Admin
+ *   - accept key in constructor
+ *   - createDevice()
+ *   - deleteDevice()
+ *   - editDevice()
+ *   - setImage()
+ * - Convenience Functions
+ *  - User
+ *   - getPicture()
+ */
 
 module.exports = Devices;
