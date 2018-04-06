@@ -36,7 +36,7 @@ class HttpApi {
     }
 
     if (!this.host)
-      throw Error("Host option is required");
+      throw Error("Host option is required.");
   }
 
   _get(endpoint) {
