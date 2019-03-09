@@ -47,7 +47,20 @@ class Devices extends HttpApi {
       }
       if (notWorking.length === 0)
         return false;
-      return notWorking;
+      else
+        return notWorking;
+    });
+  }
+
+  getInstallInstructs(device) {
+    return this.getDevice(device).then((ret) => {
+      return ret["install"] || false;
+    });
+  }
+
+  getInstallSetting(device, setting) {
+    return this.getInstallInstructs(device).then((ret) => {
+      return ret["installSettings"][setting] || false;
     });
   }
 }

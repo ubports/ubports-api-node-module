@@ -18,9 +18,12 @@
 
 const http = require("request");
 
+const time = () => Math.floor(new Date() / 1000);
+
 // Base http api class
 class HttpApi {
   constructor(options) {
+    this.cache = {}
     if (options) {
       if (options.host.match(/https?:\/\/(www\.)?[-a-z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-z0-9@:%_\+.~#?&//=]*)/i)) {
         // ensure https
@@ -40,18 +43,31 @@ class HttpApi {
   }
 
   _get(endpoint) {
+    if (endpoint === undefined) return;
     const _this = this;
     return new Promise(function(resolve, reject) {
-      http.get({
-        url: _this.host + endpoint,
-        json: true
-      }, (err, res, bod) => {
-        if (err || res.statusCode !== 200) {
-          reject(err);
-          return;
-        }
-        resolve(bod);
-      });
+      var now=time();
+      if (_this.cache[endpoint] && _this.cache[endpoint]["expire"] > now) {
+        resolve(_this.cache[endpoint]["data"]);
+        return;
+      } else {
+        http.get({
+          url: _this.host + endpoint,
+          json: true
+        }, (err, res, bod) => {
+          if (err || res.statusCode !== 200) {
+            reject(err);
+            return;
+          } else {
+            if (!_this.cache[endpoint])
+              _this.cache[endpoint] = {}
+            _this.cache[endpoint]["data"] = bod;
+            _this.cache[endpoint]["expire"] = time()+180;
+            resolve(bod);
+            return;
+          }
+        });
+      }
     });
   }
 
