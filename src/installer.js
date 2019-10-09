@@ -18,7 +18,7 @@
 
 const HttpApi = require("./http.js");
 
-const DEFAULT_HOST = "https://devices.ubports.com/";
+const DEFAULT_HOST = "https://raw.githubusercontent.com/ubports/installer-configs/master/";
 
 class Installer extends HttpApi {
   constructor(options) {
@@ -30,15 +30,33 @@ class Installer extends HttpApi {
   }
 
   getDevices() {
-    return this._get("api/installer/devices");
+    return this._get("index.json");
   }
 
-  getDevice(device) {
-    return this._get("api/installer/devices/"+device);
+  getDeviceSelects() {
+    var _this = this;
+    return new Promise(function(resolve, reject) {
+      _this.getDevices().then((devices) => {
+        var devicesAppend = [];
+        Object.entries(devices).forEach((device) => {
+          devicesAppend.push("<option name=\"" + device[0] + "\">" + device[1] + "</option>");
+        });
+        resolve(devicesAppend.join(''));
+      }).catch(reject);
+    });
   }
 
-  getInstallInstructs(device) {
-    return this._get("api/installer/"+device);
+  getAliases() {
+    return this._get("aliases.json");
+  }
+
+  resolveAlias(codename) {
+    var _this = this;
+    return new Promise(function(resolve, reject) {
+      _this.getAliases().then((aliases) => {
+        resolve(aliases[codename] || codename);
+      }).catch(reject);
+    });
   }
 }
 

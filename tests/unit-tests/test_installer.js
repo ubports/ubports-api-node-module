@@ -27,15 +27,11 @@ chai.use(sinonChai);
 
 const Installer = require('../../src/module.js').Installer;
 
-const devicesJson = require("../test-data/devices.json")
-const deviceBaconJson = require("../test-data/device-bacon.json")
-const deviceFP2Json = require("../test-data/device-FP2.json")
-
 describe('Installer module', function() {
   describe("constructor()", function() {
     it("should create default installer-api-client", function() {
       const api = new Installer();
-      expect(api.host).to.eql("https://devices.ubports.com/");
+      expect(api.host).to.eql("https://raw.githubusercontent.com/ubports/installer-configs/master/");
     });
 
     it("should create custom installer-api-client", function() {
@@ -76,14 +72,14 @@ describe('Installer module', function() {
   describe("getDevices()", function() {
     it("should return devices", function() {
       const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(false, {statusCode: 200}, devicesJson);
+        cb(false, {statusCode: 200}, {codename_1: "Name 1", codename_2: "Name 2"});
       });
 
       const api = new Installer();
       return api.getDevices().then((result) => {
-        expect(result).to.eql(devicesJson);
+        expect(result).to.eql({codename_1: "Name 1", codename_2: "Name 2"});
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/installer/devices",
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/index.json",
           json: true
         });
       });
@@ -91,31 +87,31 @@ describe('Installer module', function() {
 
     it("should return error", function() {
       const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(true, {statusCode: 500}, devicesJson);
+        cb(true, {statusCode: 500}, null);
       });
 
       const api = new Installer();
       return api.getDevices().then(() => {}).catch((err) => {
         expect(err).to.eql(true);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/installer/devices",
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/index.json",
           json: true
         });
       });
     });
   });
 
-  describe("getDevice()", function() {
-    it("should return devices", function() {
+  describe("getDeviceSelects()", function() {
+    it("should return device selects", function() {
       const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(false, {statusCode: 200}, deviceBaconJson);
+        cb(false, {statusCode: 200}, {codename_1: "Name 1", codename_2: "Name 2"});
       });
 
       const api = new Installer();
-      return api.getDevice("bacon").then((result) => {
-        expect(result).to.eql(deviceBaconJson);
+      return api.getDeviceSelects().then((result) => {
+        expect(result).to.eql('<option name="codename_1">Name 1</option><option name="codename_2">Name 2</option>');
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/installer/devices/bacon",
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/index.json",
           json: true
         });
       });
@@ -123,31 +119,31 @@ describe('Installer module', function() {
 
     it("should return error", function() {
       const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(true, {statusCode: 500}, deviceBaconJson);
+        cb(true, {statusCode: 500}, null);
       });
 
       const api = new Installer();
-      return api.getDevice("bacon").then(() => {}).catch((err) => {
+      return api.getDeviceSelects().then(() => {}).catch((err) => {
         expect(err).to.eql(true);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/installer/devices/bacon",
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/index.json",
           json: true
         });
       });
     });
   });
 
-  describe("getInstallInstructs()", function() {
-    it("should return devices", function() {
+  describe("getAliases()", function() {
+    it("should return aliases", function() {
       const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(false, {statusCode: 200}, deviceBaconJson);
+        cb(false, {statusCode: 200}, {alias_1: "codename_1", alias_2: "codename_2"});
       });
 
       const api = new Installer();
-      return api.getInstallInstructs("bacon").then((result) => {
-        expect(result).to.eql(deviceBaconJson);
+      return api.getAliases().then((result) => {
+        expect(result).to.eql({alias_1: "codename_1", alias_2: "codename_2"});
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/installer/bacon",
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/aliases.json",
           json: true
         });
       });
@@ -155,17 +151,50 @@ describe('Installer module', function() {
 
     it("should return error", function() {
       const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(true, {statusCode: 500}, deviceBaconJson);
+        cb(true, {statusCode: 500}, null);
       });
 
       const api = new Installer();
-      return api.getInstallInstructs("bacon").then(() => {}).catch((err) => {
+      return api.getAliases().then(() => {}).catch((err) => {
         expect(err).to.eql(true);
         expect(requestStub).to.have.been.calledWith({
-          url: "https://devices.ubports.com/api/installer/bacon",
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/aliases.json",
           json: true
         });
       });
     });
   });
+
+  describe("resolveAlias()", function() {
+    it("should resolve alias", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, {alias_1: "codename_1", alias_2: "codename_2"});
+      });
+
+      const api = new Installer();
+      return api.resolveAlias("alias_1").then((result) => {
+        expect(result).to.eql("codename_1");
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/aliases.json",
+          json: true
+        });
+      });
+    });
+
+    it("should not resolve valid codename", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, {alias_1: "codename_1", alias_2: "codename_2"});
+      });
+
+      const api = new Installer();
+      return api.resolveAlias("codename_1").then((result) => {
+        expect(result).to.eql("codename_1");
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/aliases.json",
+          json: true
+        });
+      });
+    });
+  });
+
 });
