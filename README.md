@@ -21,7 +21,6 @@ const UbpApi = require("./src/module.js");
 const devices = new UbpApi.Devices();
 const installer = new UbpApi.Installer();
 
-installer.getInstallInstructs("FP2").then((device) => console.log("Device: " + device.name));
 devices.getNotWorking("FP2").then((notWorking) => console.log("Not working: " + notWorking));
 ```
 
