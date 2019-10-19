@@ -197,4 +197,124 @@ describe('Installer module', function() {
     });
   });
 
+  describe("getDevice()", function() {
+    it("should resolve device", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, {alias_1: "codename_1", alias_2: "codename_2"});
+      });
+
+      const api = new Installer();
+      return api.getDevice("alias_1").then((result) => {
+        expect(result).to.eql({alias_1: "codename_1", alias_2: "codename_2"});
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
+          json: true
+        });
+      });
+    });
+    it("should reject if response empty");
+  });
+
+  describe("getDeviceName()", function() {
+    it("should resolve device name", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, {alias_1: "codename_1", name: "This is a name"});
+      });
+
+      const api = new Installer();
+      return api.getDeviceName("alias_1").then((result) => {
+        expect(result).to.eql("This is a name");
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
+          json: true
+        });
+      });
+    });
+    it("should reject if not found", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, {alias_1: "codename_1"});
+      });
+
+      const api = new Installer();
+      return api.getDeviceName("alias_1").catch((err) => {
+        expect(err).to.eql(undefined);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
+          json: true
+        });
+      });
+    });
+  });
+
+  describe("getOSs()", function() {
+    it("should return operating systems", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, {
+          alias_1: "codename_1",
+          operating_systems: [
+            {name: "name0"},
+            {name: "name1"},
+            {name: "name2"},
+            {name: "name3"}
+          ]
+        });
+      });
+
+      const api = new Installer();
+      return api.getOSs("alias_1").then((result) => {
+        expect(result).to.eql(['name0', 'name1', 'name2', 'name3']);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
+          json: true
+        });
+      });
+    });
+    it("should reject if nothing available", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, {
+          alias_1: "codename_1"
+        });
+      });
+
+      const api = new Installer();
+      return api.getOSs("alias_1").catch((error) => {
+        expect(error).to.eql(undefined);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
+          json: true
+        });
+      });
+    });
+  });
+
+  describe("getOSSelects()", function() {
+    it("should return os selects", function() {
+      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
+        cb(false, {statusCode: 200}, {
+          alias_1: "codename_1",
+          operating_systems: [
+            {name: "name0"},
+            {name: "name1"},
+            {name: "name2"},
+            {name: "name3"}
+          ]
+        });
+      });
+
+      const api = new Installer();
+      return api.getOSSelects("alias_1").then((result) => {
+        expect(result).to.eql([
+          "<option name=\"0\">name0</option>",
+          "<option name=\"1\">name1</option>",
+          "<option name=\"2\">name2</option>",
+          "<option name=\"3\">name3</option>"
+        ]);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
+          json: true
+        });
+      });
+    });
+  });
+
 });

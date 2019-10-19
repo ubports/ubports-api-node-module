@@ -1,11 +1,11 @@
 {
   "name": "ubports-api-node-module",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "This is a nodejs module to talk to ubports apis and services, built using modern javascript.",
   "main": "src/module.js",
   "scripts": {
     "test": "mocha ./tests/unit-tests/*",
-    "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./tests/unit-tests/*"
+    "test-travis": "./node_modules/nyc/bin/nyc.js --reporter=lcov ./node_modules/mocha/bin/_mocha -- -R spec ./tests/unit-tests/*"
   },
   "repository": {
     "type": "git",
@@ -19,12 +19,12 @@
   "homepage": "https://github.com/ubports/ubports-api-node-module#readme",
   "dependencies": {
     "request": "^2.83.0",
-    "chai": "^4.1.2",
-    "coveralls": "^3.0.0",
-    "istanbul": "^0.4.5",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.7",
+    "nyc": "^14.1.1",
     "mkdirp": "^0.5.1",
-    "mocha": "^4.0.1",
-    "sinon": "^4.1.3",
-    "sinon-chai": "^2.14.0"
+    "mocha": "^6.2.2",
+    "sinon": "^7.5.0",
+    "sinon-chai": "^3.3.0"
   }
 }
