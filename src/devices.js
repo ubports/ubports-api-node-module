@@ -22,10 +22,8 @@ const DEFAULT_HOST = "https://api.ubports.com/v1/devices/";
 
 class Devices extends HttpApi {
   constructor(options) {
-    if (!options)
-      options = {};
-    if (!options.host)
-      options.host = DEFAULT_HOST;
+    if (!options) options = {};
+    if (!options.host) options.host = DEFAULT_HOST;
     super(options);
   }
 
@@ -38,28 +36,25 @@ class Devices extends HttpApi {
   }
 
   getNotWorking(device) {
-    return this.getDevice(device).then((ret) => {
+    return this.getDevice(device).then(ret => {
       var whatsWorking = ret.whatIsWorking;
       var notWorking = [];
       for (var i in whatsWorking) {
-        if (!whatsWorking[i].works)
-          notWorking.push(whatsWorking[i].feature);
+        if (!whatsWorking[i].works) notWorking.push(whatsWorking[i].feature);
       }
-      if (notWorking.length === 0)
-        return false;
-      else
-        return notWorking;
+      if (notWorking.length === 0) return false;
+      else return notWorking;
     });
   }
 
   getInstallInstructs(device) {
-    return this.getDevice(device).then((ret) => {
+    return this.getDevice(device).then(ret => {
       return ret["install"] || false;
     });
   }
 
   getInstallSetting(device, setting) {
-    return this.getInstallInstructs(device).then((ret) => {
+    return this.getInstallInstructs(device).then(ret => {
       return ret["installSettings"][setting] || false;
     });
   }

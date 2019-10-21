@@ -23,9 +23,13 @@ const time = () => Math.floor(new Date() / 1000);
 // Base http api class
 class HttpApi {
   constructor(options) {
-    this.cache = {}
+    this.cache = {};
     if (options) {
-      if (options.host.match(/https?:\/\/(www\.)?[-a-z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-z0-9@:%_\+.~#?&//=]*)/i)) {
+      if (
+        options.host.match(
+          /https?:\/\/(www\.)?[-a-z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-z0-9@:%_\+.~#?&//=]*)/i
+        )
+      ) {
         // ensure https
         if (!options.allow_insecure && options.host.includes("http://"))
           throw new Error("Insecure URL! Call with allow_insecure to ignore.");
@@ -34,39 +38,39 @@ class HttpApi {
       } else {
         throw new Error("Host is not a valid URL!");
       }
-      if (options.port)
-        this.port = options.port;
+      if (options.port) this.port = options.port;
     }
 
-    if (!this.host)
-      throw Error("Host option is required.");
+    if (!this.host) throw Error("Host option is required.");
   }
 
   _get(endpoint) {
     if (endpoint === undefined) return;
     const _this = this;
     return new Promise(function(resolve, reject) {
-      var now=time();
+      var now = time();
       if (_this.cache[endpoint] && _this.cache[endpoint]["expire"] > now) {
         resolve(_this.cache[endpoint]["data"]);
         return;
       } else {
-        http.get({
-          url: _this.host + endpoint,
-          json: true
-        }, (err, res, bod) => {
-          if (err || res.statusCode !== 200) {
-            reject(err);
-            return;
-          } else {
-            if (!_this.cache[endpoint])
-              _this.cache[endpoint] = {}
-            _this.cache[endpoint]["data"] = bod;
-            _this.cache[endpoint]["expire"] = time()+180;
-            resolve(bod);
-            return;
+        http.get(
+          {
+            url: _this.host + endpoint,
+            json: true
+          },
+          (err, res, bod) => {
+            if (err || res.statusCode !== 200) {
+              reject(err);
+              return;
+            } else {
+              if (!_this.cache[endpoint]) _this.cache[endpoint] = {};
+              _this.cache[endpoint]["data"] = bod;
+              _this.cache[endpoint]["expire"] = time() + 180;
+              resolve(bod);
+              return;
+            }
           }
-        });
+        );
       }
     });
   }
@@ -74,17 +78,20 @@ class HttpApi {
   _post(endpoint, body) {
     const _this = this;
     return new Promise(function(resolve, reject) {
-      http.post({
-        url: _this.host + endpoint,
-        json: true,
-        body: body
-      }, (err, res, bod) => {
-        if (err || res.statusCode !== 200) {
-          reject(err);
-          return;
+      http.post(
+        {
+          url: _this.host + endpoint,
+          json: true,
+          body: body
+        },
+        (err, res, bod) => {
+          if (err || res.statusCode !== 200) {
+            reject(err);
+            return;
+          }
+          resolve(bod);
         }
-        resolve(bod);
-      });
+      );
     });
   }
 }
