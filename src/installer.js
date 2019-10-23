@@ -18,14 +18,13 @@
 
 const HttpApi = require("./http.js");
 
-const DEFAULT_HOST = "https://raw.githubusercontent.com/ubports/installer-configs/master/";
+const DEFAULT_HOST =
+  "https://raw.githubusercontent.com/ubports/installer-configs/master/";
 
 class Installer extends HttpApi {
   constructor(options) {
-    if (!options)
-      options = {};
-    if (!options.host)
-      options.host = DEFAULT_HOST;
+    if (!options) options = {};
+    if (!options.host) options.host = DEFAULT_HOST;
     super(options);
   }
 
@@ -36,13 +35,18 @@ class Installer extends HttpApi {
   getDeviceSelects() {
     var _this = this;
     return new Promise(function(resolve, reject) {
-      _this.getDevices().then((devices) => {
-        var devicesAppend = [];
-        Object.entries(devices).forEach((device) => {
-          devicesAppend.push("<option name=\"" + device[0] + "\">" + device[1] + "</option>");
-        });
-        resolve(devicesAppend.join(''));
-      }).catch(reject);
+      _this
+        .getDevices()
+        .then(devices => {
+          var devicesAppend = [];
+          Object.entries(devices).forEach(device => {
+            devicesAppend.push(
+              '<option name="' + device[0] + '">' + device[1] + "</option>"
+            );
+          });
+          resolve(devicesAppend.join(""));
+        })
+        .catch(reject);
     });
   }
 
@@ -53,60 +57,80 @@ class Installer extends HttpApi {
   resolveAlias(codename) {
     var _this = this;
     return new Promise(function(resolve, reject) {
-      _this.getAliases().then((aliases) => {
-        resolve(aliases[codename] || codename);
-      }).catch(reject);
+      _this
+        .getAliases()
+        .then(aliases => {
+          resolve(aliases[codename] || codename);
+        })
+        .catch(reject);
     });
   }
 
   getDevice(codename) {
     var _this = this;
     return new Promise(function(resolve, reject) {
-      _this.resolveAlias(codename).then((codename) => {
-        _this._get("v1/" + codename + ".json").then((device) => {
-          resolve(device);
-        }).catch(reject);
-      }).catch(reject);
+      _this
+        .resolveAlias(codename)
+        .then(codename => {
+          _this
+            ._get("v1/" + codename + ".json")
+            .then(device => {
+              resolve(device);
+            })
+            .catch(reject);
+        })
+        .catch(reject);
     });
   }
 
   getDeviceName(codename) {
     var _this = this;
     return new Promise(function(resolve, reject) {
-      _this.getDevice(codename).then((device) => {
-        if (device && device.name) resolve(device.name);
-        else reject();
-      }).catch(reject);
+      _this
+        .getDevice(codename)
+        .then(device => {
+          if (device && device.name) resolve(device.name);
+          else reject();
+        })
+        .catch(reject);
     });
   }
 
   getOSs(codename) {
     var _this = this;
     return new Promise(function(resolve, reject) {
-      _this.getDevice(codename).then((device) => {
-        if (device && device.operating_systems) {
-          var operatingSystems = [];
-          for (var i = 0; i < device.operating_systems.length; i++) {
-            operatingSystems.push(device.operating_systems[i].name);
+      _this
+        .getDevice(codename)
+        .then(device => {
+          if (device && device.operating_systems) {
+            var operatingSystems = [];
+            for (var i = 0; i < device.operating_systems.length; i++) {
+              operatingSystems.push(device.operating_systems[i].name);
+            }
+            resolve(operatingSystems);
+          } else {
+            reject();
           }
-          resolve(operatingSystems);
-        } else {
-          reject();
-        }
-      }).catch(reject);
+        })
+        .catch(reject);
     });
   }
 
   getOSSelects(codename) {
     var _this = this;
     return new Promise(function(resolve, reject) {
-      _this.getOSs(codename).then((operatingSystems) => {
-        var osSelects = [];
-        for (var i = 0; i < operatingSystems.length; i++) {
-          osSelects.push("<option name=\"" + i + "\">" + operatingSystems[i] + "</option>");
-        }
-        resolve(osSelects);
-      }).catch(reject);
+      _this
+        .getOSs(codename)
+        .then(operatingSystems => {
+          var osSelects = [];
+          for (var i = 0; i < operatingSystems.length; i++) {
+            osSelects.push(
+              '<option name="' + i + '">' + operatingSystems[i] + "</option>"
+            );
+          }
+          resolve(osSelects);
+        })
+        .catch(reject);
     });
   }
 }

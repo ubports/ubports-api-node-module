@@ -17,21 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const fs = require('fs');
-const request = require('request');
+const fs = require("fs");
+const request = require("request");
 
-const chai = require('chai');
+const chai = require("chai");
 var sinonChai = require("sinon-chai");
 var expect = chai.expect;
 chai.use(sinonChai);
 
-const Devices = require('../../src/module.js').Devices;
+const Devices = require("../../src/module.js").Devices;
 
-const devicesJson = require("../test-data/devices.json")
-const deviceBaconJson = require("../test-data/device-bacon.json")
-const deviceFP2Json = require("../test-data/device-FP2.json")
+const devicesJson = require("../test-data/devices.json");
+const deviceBaconJson = require("../test-data/device-bacon.json");
+const deviceFP2Json = require("../test-data/device-FP2.json");
 
-describe('Devices module', function() {
+describe("Devices module", function() {
   describe("constructor()", function() {
     it("should create default devices-api-client", function() {
       const api = new Devices();
@@ -52,7 +52,9 @@ describe('Devices module', function() {
       try {
         const api = new Devices({ host: "http://api.example.com/" });
       } catch (err) {
-        expect(err.message).to.equal("Insecure URL! Call with allow_insecure to ignore.");
+        expect(err.message).to.equal(
+          "Insecure URL! Call with allow_insecure to ignore."
+        );
       }
     });
 
@@ -75,12 +77,14 @@ describe('Devices module', function() {
 
   describe("getDevices()", function() {
     it("should return devices", function() {
-      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(false, {statusCode: 200}, devicesJson);
-      });
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(false, { statusCode: 200 }, devicesJson);
+        });
 
       const api = new Devices();
-      return api.getDevices().then((result) => {
+      return api.getDevices().then(result => {
         expect(result).to.eql(devicesJson);
         expect(requestStub).to.have.been.calledWith({
           url: "https://api.ubports.com/v1/devices/",
@@ -90,29 +94,36 @@ describe('Devices module', function() {
     });
 
     it("should return error", function() {
-      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(true, {statusCode: 500}, devicesJson);
-      });
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(true, { statusCode: 500 }, devicesJson);
+        });
 
       const api = new Devices();
-      return api.getDevices().then(() => {}).catch((err) => {
-        expect(err).to.eql(true);
-        expect(requestStub).to.have.been.calledWith({
-          url: "https://api.ubports.com/v1/devices/",
-          json: true
+      return api
+        .getDevices()
+        .then(() => {})
+        .catch(err => {
+          expect(err).to.eql(true);
+          expect(requestStub).to.have.been.calledWith({
+            url: "https://api.ubports.com/v1/devices/",
+            json: true
+          });
         });
-      });
     });
   });
 
   describe("getDevice()", function() {
     it("should return devices", function() {
-      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(false, {statusCode: 200}, deviceBaconJson);
-      });
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(false, { statusCode: 200 }, deviceBaconJson);
+        });
 
       const api = new Devices();
-      return api.getDevice("bacon").then((result) => {
+      return api.getDevice("bacon").then(result => {
         expect(result).to.eql(deviceBaconJson);
         expect(requestStub).to.have.been.calledWith({
           url: "https://api.ubports.com/v1/devices/bacon",
@@ -122,29 +133,36 @@ describe('Devices module', function() {
     });
 
     it("should return error", function() {
-      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(true, {statusCode: 500}, deviceBaconJson);
-      });
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(true, { statusCode: 500 }, deviceBaconJson);
+        });
 
       const api = new Devices();
-      return api.getDevice("bacon").then(() => {}).catch((err) => {
-        expect(err).to.eql(true);
-        expect(requestStub).to.have.been.calledWith({
-          url: "https://api.ubports.com/v1/devices/bacon",
-          json: true
+      return api
+        .getDevice("bacon")
+        .then(() => {})
+        .catch(err => {
+          expect(err).to.eql(true);
+          expect(requestStub).to.have.been.calledWith({
+            url: "https://api.ubports.com/v1/devices/bacon",
+            json: true
+          });
         });
-      });
     });
   });
 
   describe("getNotWorking()", function() {
     it("should return false", function() {
-      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(false, {statusCode: 200}, deviceBaconJson);
-      });
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(false, { statusCode: 200 }, deviceBaconJson);
+        });
 
       const api = new Devices();
-      return api.getNotWorking("bacon").then((result) => {
+      return api.getNotWorking("bacon").then(result => {
         expect(result).to.eql(false);
         expect(requestStub).to.have.been.calledWith({
           url: "https://api.ubports.com/v1/devices/bacon",
@@ -154,13 +172,15 @@ describe('Devices module', function() {
     });
 
     it("should return what's not working", function() {
-      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(false, {statusCode: 200}, deviceFP2Json);
-      });
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(false, { statusCode: 200 }, deviceFP2Json);
+        });
 
       const api = new Devices();
-      return api.getNotWorking("FP2").then((result) => {
-        expect(result).to.eql(['GPS']);
+      return api.getNotWorking("FP2").then(result => {
+        expect(result).to.eql(["GPS"]);
         expect(requestStub).to.have.been.calledWith({
           url: "https://api.ubports.com/v1/devices/FP2",
           json: true
@@ -169,18 +189,23 @@ describe('Devices module', function() {
     });
 
     it("should return error", function() {
-      const requestStub = this.sandbox.stub(request, 'get').callsFake(function(url, cb) {
-        cb(true, {statusCode: 500}, deviceBaconJson);
-      });
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(true, { statusCode: 500 }, deviceBaconJson);
+        });
 
       const api = new Devices();
-      return api.getNotWorking("bacon").then(() => {}).catch((err) => {
-        expect(err).to.eql(true);
-        expect(requestStub).to.have.been.calledWith({
-          url: "https://api.ubports.com/v1/devices/bacon",
-          json: true
+      return api
+        .getNotWorking("bacon")
+        .then(() => {})
+        .catch(err => {
+          expect(err).to.eql(true);
+          expect(requestStub).to.have.been.calledWith({
+            url: "https://api.ubports.com/v1/devices/bacon",
+            json: true
+          });
         });
-      });
     });
   });
 });
