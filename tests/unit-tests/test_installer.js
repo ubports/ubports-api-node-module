@@ -126,7 +126,7 @@ describe("Installer module", function() {
           cb(
             false,
             { statusCode: 200 },
-            { codename_1: "Name 1", codename_2: "Name 2" }
+            { codename_2: "Name 2", codename_1: "Name 1" }
           );
         });
 
