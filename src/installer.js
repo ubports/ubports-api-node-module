@@ -39,11 +39,13 @@ class Installer extends HttpApi {
         .getDevices()
         .then(devices => {
           var devicesAppend = [];
-          Object.entries(devices).forEach(device => {
-            devicesAppend.push(
-              '<option name="' + device[0] + '">' + device[1] + "</option>"
-            );
-          });
+          Object.entries(devices)
+            .sort((a, b) => a[1].localeCompare(b[1]))
+            .forEach(device => {
+              devicesAppend.push(
+                '<option name="' + device[0] + '">' + device[1] + "</option>"
+              );
+            });
           resolve(devicesAppend.join(""));
         })
         .catch(reject);
