@@ -91,7 +91,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/index.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -112,7 +113,8 @@ describe("Installer module", function() {
           expect(requestStub).to.have.been.calledWith({
             url:
               "https://raw.githubusercontent.com/ubports/installer-configs/master/index.json",
-            json: true
+            json: true,
+            timeout: 2000
           });
         });
     });
@@ -138,7 +140,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/index.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -159,7 +162,8 @@ describe("Installer module", function() {
           expect(requestStub).to.have.been.calledWith({
             url:
               "https://raw.githubusercontent.com/ubports/installer-configs/master/index.json",
-            json: true
+            json: true,
+            timeout: 2000
           });
         });
     });
@@ -183,7 +187,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/aliases.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -204,7 +209,8 @@ describe("Installer module", function() {
           expect(requestStub).to.have.been.calledWith({
             url:
               "https://raw.githubusercontent.com/ubports/installer-configs/master/aliases.json",
-            json: true
+            json: true,
+            timeout: 2000
           });
         });
     });
@@ -228,7 +234,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/aliases.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -250,7 +257,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/aliases.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -274,7 +282,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -299,7 +308,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -316,7 +326,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -348,7 +359,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -371,7 +383,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -408,7 +421,8 @@ describe("Installer module", function() {
         expect(requestStub).to.have.been.calledWith({
           url:
             "https://raw.githubusercontent.com/ubports/installer-configs/master/v1/codename_1.json",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });

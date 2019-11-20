@@ -24,6 +24,8 @@ const time = () => Math.floor(new Date() / 1000);
 class HttpApi {
   constructor(options) {
     this.cache = {};
+    this.timeout = 2000;
+    this.cachetime = 180;
     if (options) {
       if (
         options.host.match(
@@ -39,6 +41,8 @@ class HttpApi {
         throw new Error("Host is not a valid URL!");
       }
       if (options.port) this.port = options.port;
+      if (options.timeout) this.timeout = options.timeout;
+      if (options.cachetime) this.cachetime = options.cachetime;
     }
 
     if (!this.host) throw Error("Host option is required.");
@@ -56,7 +60,8 @@ class HttpApi {
         http.get(
           {
             url: _this.host + endpoint,
-            json: true
+            json: true,
+            timeout: _this.timeout
           },
           (err, res, bod) => {
             if (err || res.statusCode !== 200) {
@@ -65,7 +70,7 @@ class HttpApi {
             } else {
               if (!_this.cache[endpoint]) _this.cache[endpoint] = {};
               _this.cache[endpoint]["data"] = bod;
-              _this.cache[endpoint]["expire"] = time() + 180;
+              _this.cache[endpoint]["expire"] = time() + _this.cachetime;
               resolve(bod);
               return;
             }

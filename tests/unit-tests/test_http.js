@@ -51,4 +51,97 @@ describe("Http Module", function() {
       expect(api.port).to.eql("8080");
     });
   });
+
+  describe("_get()", function() {
+    it("should resolve data", function() {
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(false, { statusCode: 200 }, "seems ok");
+        });
+
+      const api = new httpApi({
+        host: "https://www.testurl.com"
+      });
+      return api._get("testendpoint").then(result => {
+        expect(result).to.eql("seems ok");
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://www.testurl.com/testendpoint",
+          json: true,
+          timeout: 2000
+        });
+      });
+    });
+    it("should resolve cached data", function() {
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(false, { statusCode: 200 }, "seems ok");
+        });
+
+      const api = new httpApi({
+        host: "https://www.testurl.com"
+      });
+      return Promise.all([
+        api._get("testendpoint"),
+        api._get("testendpoint")
+      ]).then(results => {
+        expect(results[0]).to.eql("seems ok");
+        expect(results[1]).to.eql("seems ok");
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://www.testurl.com/testendpoint",
+          json: true,
+          timeout: 2000
+        });
+        expect(requestStub).to.not.have.been.calledTwice;
+      });
+    });
+
+    it("should respect cache time", function() {
+      let i = 0;
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb(false, { statusCode: 200 }, "request " + i++ + " ok");
+        });
+
+      const api = new httpApi({
+        host: "https://www.testurl.com",
+        cachetime: -1
+      });
+      return Promise.all([
+        api._get("testendpoint"),
+        api._get("testendpoint")
+      ]).then(results => {
+        expect(results[0]).to.not.eql(results[1]);
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://www.testurl.com/testendpoint",
+          json: true,
+          timeout: 2000
+        });
+        expect(requestStub).to.have.been.calledTwice;
+      });
+    });
+
+    it("should time out", function() {
+      const requestStub = this.sandbox
+        .stub(request, "get")
+        .callsFake(function(url, cb) {
+          cb({ code: "ETIMEDOUT", connect: true });
+        });
+
+      const api = new httpApi({
+        host: "https://www.testurl.com",
+        timeout: 1
+      });
+      return api._get("testendpoint").catch(error => {
+        expect(error.code).to.eql("ETIMEDOUT");
+        expect(requestStub).to.have.been.calledWith({
+          url: "https://www.testurl.com/testendpoint",
+          json: true,
+          timeout: 1
+        });
+      });
+    });
+  });
 });

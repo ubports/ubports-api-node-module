@@ -88,7 +88,8 @@ describe("Devices module", function() {
         expect(result).to.eql(devicesJson);
         expect(requestStub).to.have.been.calledWith({
           url: "https://api.ubports.com/v1/devices/",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -108,7 +109,8 @@ describe("Devices module", function() {
           expect(err).to.eql(true);
           expect(requestStub).to.have.been.calledWith({
             url: "https://api.ubports.com/v1/devices/",
-            json: true
+            json: true,
+            timeout: 2000
           });
         });
     });
@@ -127,7 +129,8 @@ describe("Devices module", function() {
         expect(result).to.eql(deviceBaconJson);
         expect(requestStub).to.have.been.calledWith({
           url: "https://api.ubports.com/v1/devices/bacon",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -147,7 +150,8 @@ describe("Devices module", function() {
           expect(err).to.eql(true);
           expect(requestStub).to.have.been.calledWith({
             url: "https://api.ubports.com/v1/devices/bacon",
-            json: true
+            json: true,
+            timeout: 2000
           });
         });
     });
@@ -166,7 +170,8 @@ describe("Devices module", function() {
         expect(result).to.eql(false);
         expect(requestStub).to.have.been.calledWith({
           url: "https://api.ubports.com/v1/devices/bacon",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -183,7 +188,8 @@ describe("Devices module", function() {
         expect(result).to.eql(["GPS"]);
         expect(requestStub).to.have.been.calledWith({
           url: "https://api.ubports.com/v1/devices/FP2",
-          json: true
+          json: true,
+          timeout: 2000
         });
       });
     });
@@ -203,7 +209,8 @@ describe("Devices module", function() {
           expect(err).to.eql(true);
           expect(requestStub).to.have.been.calledWith({
             url: "https://api.ubports.com/v1/devices/bacon",
-            json: true
+            json: true,
+            timeout: 2000
           });
         });
     });
