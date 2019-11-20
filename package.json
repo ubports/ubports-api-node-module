@@ -1,6 +1,6 @@
 {
   "name": "ubports-api-node-module",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "This is a nodejs module to talk to ubports apis and services, built using modern javascript.",
   "main": "src/module.js",
   "scripts": {
@@ -30,9 +30,9 @@
     "sinon-chai": "^3.3.0"
   },
   "devDependencies": {
-    "eslint": "^6.5.1",
-    "eslint-config-prettier": "^6.4.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "prettier": "^1.18.2"
+    "prettier": "^1.19.1"
   }
 }
