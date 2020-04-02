@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const http = require("request");
+const axios = require("axios");
 
 const time = () => Math.floor(new Date() / 1000);
 
@@ -43,60 +43,31 @@ class HttpApi {
       if (options.port) this.port = options.port;
       if (options.timeout) this.timeout = options.timeout;
       if (options.cachetime) this.cachetime = options.cachetime;
+    } else {
+      throw Error("Host option is required.");
     }
-
-    if (!this.host) throw Error("Host option is required.");
   }
 
-  _get(endpoint) {
-    if (endpoint === undefined) return;
+  _get(endpoint = "") {
     const _this = this;
     return new Promise(function(resolve, reject) {
       var now = time();
       if (_this.cache[endpoint] && _this.cache[endpoint]["expire"] > now) {
         resolve(_this.cache[endpoint]["data"]);
-        return;
       } else {
-        http.get(
-          {
+        axios
+          .get({
             url: _this.host + endpoint,
-            json: true,
             timeout: _this.timeout
-          },
-          (err, res, bod) => {
-            if (err || res.statusCode !== 200) {
-              reject(err);
-              return;
-            } else {
-              if (!_this.cache[endpoint]) _this.cache[endpoint] = {};
-              _this.cache[endpoint]["data"] = bod;
-              _this.cache[endpoint]["expire"] = time() + _this.cachetime;
-              resolve(bod);
-              return;
-            }
-          }
-        );
+          })
+          .then(response => {
+            if (!_this.cache[endpoint]) _this.cache[endpoint] = {};
+            _this.cache[endpoint]["data"] = response.data;
+            _this.cache[endpoint]["expire"] = time() + _this.cachetime;
+            resolve(response.data);
+          })
+          .catch(reject);
       }
-    });
-  }
-
-  _post(endpoint, body) {
-    const _this = this;
-    return new Promise(function(resolve, reject) {
-      http.post(
-        {
-          url: _this.host + endpoint,
-          json: true,
-          body: body
-        },
-        (err, res, bod) => {
-          if (err || res.statusCode !== 200) {
-            reject(err);
-            return;
-          }
-          resolve(bod);
-        }
-      );
     });
   }
 }

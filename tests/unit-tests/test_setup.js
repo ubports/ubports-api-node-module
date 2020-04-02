@@ -17,11 +17,12 @@
 
 const sinon = require("sinon");
 const chai = require("chai");
+const moxios = require("moxios");
 
 beforeEach(function() {
-  this.sandbox = sinon.createSandbox();
+  moxios.install();
 });
 
 afterEach(function() {
-  this.sandbox.restore();
+  moxios.install();
 });

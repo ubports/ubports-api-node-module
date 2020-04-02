@@ -1,6 +1,9 @@
 "use strict";
+
 /*
+ * Copyright (C) 2017-2020 UBports Foundation <info@ubports.com>
  * Copyright (C) 2017 Marius Gripsgard <marius@ubports.com>
+ * Copyright (C) 2017-2020 Jan Sprinz <neo@neothethird.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,60 +21,12 @@
 
 const HttpApi = require("./http.js");
 
-const DEFAULT_HOST = "https://api.ubports.com/v1/devices/";
-
 class Devices extends HttpApi {
-  constructor(options) {
-    if (!options) options = {};
-    if (!options.host) options.host = DEFAULT_HOST;
-    super(options);
-  }
-
-  getDevices() {
-    return this._get("");
-  }
-
-  getDevice(device) {
-    return this._get(device);
-  }
-
-  getNotWorking(device) {
-    return this.getDevice(device).then(ret => {
-      var whatsWorking = ret.whatIsWorking;
-      var notWorking = [];
-      for (var i in whatsWorking) {
-        if (!whatsWorking[i].works) notWorking.push(whatsWorking[i].feature);
-      }
-      if (notWorking.length === 0) return false;
-      else return notWorking;
-    });
-  }
-
-  getInstallInstructs(device) {
-    return this.getDevice(device).then(ret => {
-      return ret["install"] || false;
-    });
-  }
-
-  getInstallSetting(device, setting) {
-    return this.getInstallInstructs(device).then(ret => {
-      return ret["installSettings"][setting] || false;
-    });
+  constructor() {
+    throw new Error(
+      "DEPRECATED: The devices module and api are no longer supported! Use the installer module instead!"
+    );
   }
 }
-
-/*
- * TODO
- * - Primitive Functions
- *  - Admin
- *   - accept key in constructor
- *   - createDevice()
- *   - deleteDevice()
- *   - editDevice()
- *   - setImage()
- * - Convenience Functions
- *  - User
- *   - getPicture()
- */
 
 module.exports = Devices;

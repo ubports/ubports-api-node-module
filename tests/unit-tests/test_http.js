@@ -17,11 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const request = require("request");
+const axios = require("axios");
+const moxios = require("moxios");
 const chai = require("chai");
+const sinon = require("sinon");
 var expect = chai.expect;
 
 const httpApi = require("../../src/http.js");
+
+const time = () => Math.floor(new Date() / 1000);
 
 describe("Http Module", function() {
   describe("constructor()", function() {
@@ -50,97 +54,114 @@ describe("Http Module", function() {
       });
       expect(api.port).to.eql("8080");
     });
+    it("should throw if no host specified", function(done) {
+      try {
+        const api = new httpApi();
+        done("error: should have thrown");
+      } catch (e) {
+        done();
+      }
+    });
+    it("should throw if host invalid", function(done) {
+      try {
+        const api = new httpApi({
+          host: "what even is this"
+        });
+        done("error: should have thrown");
+      } catch (e) {
+        done();
+      }
+    });
   });
 
   describe("_get()", function() {
-    it("should resolve data", function() {
-      const requestStub = this.sandbox
-        .stub(request, "get")
-        .callsFake(function(url, cb) {
-          cb(false, { statusCode: 200 }, "seems ok");
-        });
+    it("should resolve data", function(done) {
+      const thenSpy = sinon.spy();
+      const catchSpy = sinon.spy();
 
       const api = new httpApi({
-        host: "https://www.testurl.com"
+        host: "https://www.testurl.com",
+        timeout: 1337
       });
-      return api._get("testendpoint").then(result => {
-        expect(result).to.eql("seems ok");
-        expect(requestStub).to.have.been.calledWith({
-          url: "https://www.testurl.com/testendpoint",
-          json: true,
-          timeout: 2000
-        });
+
+      api
+        ._get()
+        .then(thenSpy)
+        .catch(catchSpy);
+
+      moxios.wait(function() {
+        let request = moxios.requests.mostRecent();
+        request
+          .respondWith({
+            status: 200,
+            response: "alrighty"
+          })
+          .then(function() {
+            try {
+              expect(thenSpy).to.have.been.calledOnceWith("alrighty");
+              expect(api.cache[""].data).to.eql("alrighty");
+              expect(thenSpy).to.not.have.been.calledTwice;
+              expect(catchSpy).to.not.have.been.called;
+              done();
+            } catch (e) {
+              done(`unfulfilled assertions: ${e}`);
+            }
+          });
       });
     });
+
     it("should resolve cached data", function() {
-      const requestStub = this.sandbox
-        .stub(request, "get")
-        .callsFake(function(url, cb) {
-          cb(false, { statusCode: 200 }, "seems ok");
-        });
-
       const api = new httpApi({
         host: "https://www.testurl.com"
       });
-      return Promise.all([
-        api._get("testendpoint"),
-        api._get("testendpoint")
-      ]).then(results => {
-        expect(results[0]).to.eql("seems ok");
-        expect(results[1]).to.eql("seems ok");
-        expect(requestStub).to.have.been.calledWith({
-          url: "https://www.testurl.com/testendpoint",
-          json: true,
-          timeout: 2000
-        });
-        expect(requestStub).to.not.have.been.calledTwice;
+
+      api.cache.testendpoint = {
+        expire: time() + 1337,
+        data: "cached data"
+      };
+
+      return api._get("testendpoint").then(r => {
+        expect(r).to.eql("cached data");
       });
     });
 
-    it("should respect cache time", function() {
-      let i = 0;
-      const requestStub = this.sandbox
-        .stub(request, "get")
-        .callsFake(function(url, cb) {
-          cb(false, { statusCode: 200 }, "request " + i++ + " ok");
-        });
+    it("cache should expire", function(done) {
+      const thenSpy = sinon.spy();
+      const catchSpy = sinon.spy();
 
       const api = new httpApi({
         host: "https://www.testurl.com",
-        cachetime: -1
+        cachetime: 1
       });
-      return Promise.all([
-        api._get("testendpoint"),
-        api._get("testendpoint")
-      ]).then(results => {
-        expect(results[0]).to.not.eql(results[1]);
-        expect(requestStub).to.have.been.calledWith({
-          url: "https://www.testurl.com/testendpoint",
-          json: true,
-          timeout: 2000
-        });
-        expect(requestStub).to.have.been.calledTwice;
-      });
-    });
 
-    it("should time out", function() {
-      const requestStub = this.sandbox
-        .stub(request, "get")
-        .callsFake(function(url, cb) {
-          cb({ code: "ETIMEDOUT", connect: true });
-        });
+      api.cache.testendpoint = {
+        expire: time() - 1337,
+        data: "cached data"
+      };
 
-      const api = new httpApi({
-        host: "https://www.testurl.com",
-        timeout: 1
-      });
-      return api._get("testendpoint").catch(error => {
-        expect(error.code).to.eql("ETIMEDOUT");
-        expect(requestStub).to.have.been.calledWith({
-          url: "https://www.testurl.com/testendpoint",
-          json: true,
-          timeout: 1
-        });
+      api
+        ._get("testendpoint")
+        .then(thenSpy)
+        .catch(catchSpy);
+
+      moxios.wait(function() {
+        let request = moxios.requests.mostRecent();
+        request
+          .respondWith({
+            status: 200,
+            response: "alrighty"
+          })
+          .then(function() {
+            try {
+              expect(thenSpy).to.have.been.calledOnceWith("alrighty");
+              expect(api.cache.testendpoint.data).to.eql("alrighty");
+              expect(thenSpy).to.not.have.been.calledTwice;
+              expect(catchSpy).to.not.have.been.called;
+              done();
+            } catch (e) {
+              done(`unfulfilled assertions: ${e}`);
+            }
+          });
       });
     });
   });

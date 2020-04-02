@@ -1,6 +1,8 @@
 "use strict";
 /*
+ * Copyright (C) 2017-2020 UBports Foundation <info@ubports.com>
  * Copyright (C) 2017 Marius Gripsgard <marius@ubports.com>
+ * Copyright (C) 2017-2020 Jan Sprinz <neo@neothethird.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
