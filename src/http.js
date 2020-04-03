@@ -56,8 +56,7 @@ class HttpApi {
         resolve(_this.cache[endpoint]["data"]);
       } else {
         axios
-          .get({
-            url: _this.host + endpoint,
+          .get(_this.host + endpoint, {
             timeout: _this.timeout
           })
           .then(response => {

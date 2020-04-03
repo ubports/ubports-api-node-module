@@ -1,6 +1,6 @@
 {
   "name": "ubports-api-node-module",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "This is a nodejs module to talk to ubports apis and services, built using modern javascript.",
   "main": "src/module.js",
   "scripts": {
