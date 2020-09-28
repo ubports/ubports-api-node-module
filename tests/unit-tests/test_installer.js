@@ -19,8 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const fs = require("fs");
-
 const chai = require("chai");
 const sinon = require("sinon");
 var sinonChai = require("sinon-chai");
@@ -50,7 +48,7 @@ describe("Installer module", function() {
 
     it("should return insecure error", function() {
       try {
-        const api = new Installer({ host: "https://devices.example.com/" });
+        new Installer({ host: "https://devices.example.com/" });
       } catch (err) {
         expect(err.message).to.equal(
           "Insecure URL! Call with allow_insecure to ignore."
@@ -68,7 +66,7 @@ describe("Installer module", function() {
 
     it("should return invalid url error", function() {
       try {
-        const api = new Installer({ host: "definitely not a valid url" });
+        new Installer({ host: "definitely not a valid url" });
       } catch (err) {
         expect(err.message).to.equal("Host is not a valid URL!");
       }

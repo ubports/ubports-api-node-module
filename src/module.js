@@ -15,10 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const Devices = require("./devices.js");
-const Installer = require("./installer.js");
-
 module.exports = {
-  Devices: Devices,
-  Installer: Installer
+  Devices: require("./devices.js"),
+  Installer: require("./installer.js")
 };

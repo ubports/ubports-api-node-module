@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const axios = require("axios");
 const moxios = require("moxios");
 const chai = require("chai");
 const sinon = require("sinon");

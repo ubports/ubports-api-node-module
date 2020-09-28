@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const sinon = require("sinon");
-const chai = require("chai");
 const moxios = require("moxios");
 
 beforeEach(function() {

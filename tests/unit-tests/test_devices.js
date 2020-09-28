@@ -17,24 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const fs = require("fs");
-
 const chai = require("chai");
 var sinonChai = require("sinon-chai");
-var expect = chai.expect;
 chai.use(sinonChai);
 
 const Devices = require("../../src/module.js").Devices;
-
-const devicesJson = require("../test-data/devices.json");
-const deviceBaconJson = require("../test-data/device-bacon.json");
-const deviceFP2Json = require("../test-data/device-FP2.json");
 
 describe("Devices module", function() {
   describe("constructor()", function() {
     it("should throw deprecation warning", function(done) {
       try {
-        const api = new Devices();
+        new Devices();
         done("error: should have thrown");
       } catch (e) {
         done();
